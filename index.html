@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Trafix | A Commuter's Guide</title>
+     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+     <link rel="icon" type="image/x-icon" href="https://imgur.com/2TpTsqI.jpeg">
+     <style>
+          /* Color Palette */
+          :root {
+               --soft-blue-bg: #E0F2F7;
+               /* Very light blue for backgrounds */
+               --light-blue: #B3E0F2;
+               /* A soft, light blue */
+               --medium-blue: #87CEEB;
+               /* Sky blue, slightly more vibrant but still soft */
+               --dark-blue: #4682B4;
+               /* Steel blue, for accents/text */
+               --text-primary: #2F4F4F;
+               /* Dark Slate Gray for main text */
+               --accent-blue: #6A5ACD;
+               /* Slate Blue, for buttons/highlights */
+               --hero-text-color: #FFFFFF; /* White text for hero section */
+               --hero-button-primary-bg: #FFFFFF;
+               --hero-button-primary-text: #2F4F4F;
+          }
+
+          * {
+               box-sizing: border-box;
+               margin: 0;
+               padding: 0;
+          }
+
+          body {
+               font-family: 'Poppins', sans-serif;
+               margin: 0;
+               padding: 0;
+               text-align: center;
+               background-color: var(--soft-blue-bg);
+               color: var(--text-primary);
+               line-height: 1.6;
+          }
+
+          html {
+               scroll-behavior: smooth;
+          }
+
+          .top-header {
+               display: flex;
+               justify-content: space-between;
+               align-items: center;
+               padding: 15px 5%;
+               background-color: white;
+               border-bottom: 2px solid var(--light-blue);
+               position: sticky;
+               top: 0;
+               z-index: 1000;
+               box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          }
+
+          .site-logo {
+               transition: all 0.3s ease;
+          }
+
+          .site-logo:hover {
+               transform: scale(1.05);
+          }
+
+          .site-logo img {
+               max-width: 100%;
+               height: auto;
+          }
+
+          .mobile-menu-toggle {
+               display: none;
+               background: none;
+               border: none;
+               color: var(--dark-blue); /* Changed to dark-blue for visibility */
+               font-size: 24px;
+               cursor: pointer;
+          }
+
+          .top-menu {
+               display: flex;
+               gap: 30px;
+          }
+
+          .menu-link {
+               text-decoration: none;
+               color: rgb(0, 0, 0);
+               font-weight: 600;
+               font-size: 18px;
+               padding: 5px 0;
+               transition: all 0.3s ease;
+          }
+
+          .menu-link:hover {
+               color: var(--dark-blue);
+               text-decoration: underline;
+          }
+
+          /* New Animated Hero Section Styles */
+          .hero-section {
+               position: relative;
+               width: 100%;
+               height: 80vh;
+               background-image: url('/placeholder.svg?height=800&width=1200'); /* Static background */
+               background-size: cover;
+               background-position: center;
+               display: flex;
+               align-items: center;
+               justify-content: flex-start;
+               padding-left: 5%;
+               text-align: left;
+               color: var(--hero-text-color);
+               overflow: hidden;
+          }
+
+          .hero-overlay {
+               position: absolute;
+               top: 0;
+               left: 0;
+               width: 100%;
+               height: 100%;
+               background: #52bffe; /* Dark overlay for text readability */
+               z-index: 1;
+          }
+
+          .hero-content {
+               position: relative; /* Ensure content is above overlay */
+               z-index: 2;
+               max-width: 500px; /* Limit width for better readability */
+          }
+
+          .hero-title {
+               font-family: 'Poppins', sans-serif;
+               font-size: 4.5rem;
+               font-weight: 700;
+               line-height: 1.1;
+               text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+               margin-bottom: 30px;
+          }
+
+          .hero-buttons {
+               display: flex;
+               gap: 15px;
+               margin-top: 30px;
+          }
+
+          .button-primary {
+               display: inline-block;
+               padding: 12px 30px;
+               border-radius: 30px;
+               text-decoration: none;
+               font-weight: 600;
+               transition: all 0.3s ease;
+               cursor: pointer;
+               background-color: var(--hero-button-primary-bg);
+               color: var(--hero-button-primary-text);
+               border: none;
+               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          }
+
+          .button-primary:hover {
+               background-color: #f0f0f0;
+               transform: translateY(-2px);
+               box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+          }
+
+          /* Commuter Animation */
+          .commuter-animation {
+                position: absolute;
+                bottom: 0;
+                width: 600px;
+                height: auto;
+                z-index: 1;
+
+                /* Only animates during motion, then delays before restarting */
+                animation: moveCommuter 6s linear infinite;
+          }
+
+          @keyframes moveCommuter {
+               0% {
+                    transform: translateX(100vw);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateX(-150vw); /* Fully off-screen left */
+                    opacity: 1;
+                }
+          }
+
+
+          .main-container {
+               width: 90%;
+               max-width: 1200px;
+               margin: auto;
+               padding: 20px 0;
+          }
+
+          .content-section {
+               display: flex;
+               align-items: center;
+               justify-content: space-between;
+               margin: 60px 0;
+               border-top: 2px solid var(--dark-blue);
+               padding-top: 40px;
+               gap: 40px;
+          }
+
+          .content-section:nth-child(even) {
+               flex-direction: row-reverse;
+          }
+
+          .section-image {
+               width: 50%;
+               height: 350px;
+               border-radius: 15px;
+               background-size: cover;
+               background-position: center;
+               transition: all 0.3s ease;
+               box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+               overflow: hidden;
+          }
+
+          .section-image:hover {
+               transform: scale(1.02);
+               box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+          }
+
+          .section-text {
+               width: 50%;
+               text-align: left;
+          }
+
+          .section-title {
+               font-size: 28px;
+               margin-bottom: 20px;
+               color: var(--dark-blue);
+               position: relative;
+               display: inline-block;
+               padding-bottom: 10px;
+               border-bottom: 3px solid var(--dark-blue);
+          }
+
+          .section-paragraph {
+               line-height: 1.8;
+               margin-bottom: 25px;
+               font-size: 16px;
+          }
+
+          .pink-button {
+               display: inline-block;
+               padding: 10px 25px;
+               border: none;
+               background-color: var(--accent-blue);
+               color: white;
+               border-radius: 30px;
+               text-decoration: none;
+               font-size: 16px;
+               font-weight: 500;
+               transition: all 0.3s ease;
+               box-shadow: 0 3px 10px rgba(106, 90, 205, 0.3);
+          }
+
+          .pink-button:hover {
+               background-color: var(--dark-blue);
+               transform: translateY(-3px);
+               box-shadow: 0 5px 15px rgba(70, 130, 180, 0.3);
+          }
+
+          .features-section {
+               background-color: var(--light-blue);
+               padding: 60px 0;
+               margin: 60px 0;
+          }
+
+          .features-heading {
+               font-size: 32px;
+               color: var(--dark-blue);
+               margin-bottom: 50px;
+          }
+
+          .features-container {
+               display: grid;
+               grid-template-columns: repeat(4, 1fr);
+               gap: 30px;
+               max-width: 1200px;
+               margin: 0 auto;
+               padding: 0 20px;
+          }
+
+          .feature-box {
+               background-color: white;
+               border-radius: 15px;
+               padding: 30px 20px;
+               text-align: center;
+               box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+               transition: all 0.3s ease;
+          }
+
+          .feature-box:hover {
+               transform: translateY(-10px);
+               box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+          }
+
+          .feature-icon {
+               font-size: 40px;
+               color: var(--accent-blue);
+               margin-bottom: 20px;
+          }
+
+          .feature-name {
+               font-size: 20px;
+               margin-bottom: 15px;
+               color: var(--dark-blue);
+          }
+
+          .feature-text {
+               font-size: 14px;
+               color: #555;
+          }
+
+
+          .footer-container {
+               background-color: var(--medium-blue);
+               padding: 0;
+               width: 100%;
+          }
+
+
+          .main-footer {
+               background-color: var(--light-blue);
+               display: flex;
+               justify-content: space-between;
+               align-items: center;
+               padding: 20px 10%;
+               border-top: 1px solid var(--soft-blue-bg);
+          }
+
+          .company-info {
+               text-align: left;
+               color: var(--text-primary);
+          }
+
+          .company-name {
+               font-weight: bold;
+               color: var(--dark-blue);
+               font-size: 1.1rem;
+               margin-bottom: 5px;
+          }
+
+          .company-details {
+               color: var(--text-primary);
+               font-size: 0.9rem;
+               margin: 3px 0;
+          }
+
+          .company-copyright {
+               color: var(--text-primary);
+               font-size: 0.9rem;
+          }
+
+          .footer-logo {
+               width: 35px;
+               height: auto;
+          }
+
+          .footer-links {
+               text-align: right;
+          }
+
+          .footer-link {
+               display: block;
+               color: var(--text-primary);
+               text-decoration: none;
+               margin: 10px 0;
+               font-size: 0.9rem;
+               transition: all 0.3s ease;
+          }
+
+          .footer-link:hover {
+               color: var(--dark-blue);
+               transform: translateX(-5px);
+          }
+
+          .scroll-top {
+               position: fixed;
+               bottom: 30px;
+               right: 30px;
+               width: 50px;
+               height: 50px;
+               background-color: var(--dark-blue);
+               color: white;
+               border-radius: 50%;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               font-size: 20px;
+               cursor: pointer;
+               opacity: 0;
+               visibility: hidden;
+               transition: all 0.3s ease;
+               z-index: 1000;
+               box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+          }
+
+          .scroll-top.show {
+               opacity: 1;
+               visibility: visible;
+          }
+
+          .scroll-top:hover {
+               background-color: var(--accent-blue);
+               transform: translateY(-5px);
+          }
+
+          @media (max-width: 1024px) {
+               .features-container {
+                    grid-template-columns: repeat(2, 1fr);
+               }
+
+               .hero-title {
+                    font-size: 3.5rem;
+               }
+          }
+
+          @media (max-width: 768px) {
+               .top-menu {
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    width: 100%;
+                    flex-direction: column;
+                    background-color: var(--light-blue);
+                    padding: 20px 0;
+                    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                    gap: 15px;
+               }
+
+               .top-menu.show {
+                    display: flex;
+               }
+
+               .top-menu .menu-link {
+                    color: var(--dark-blue);
+                    padding: 10px 20px;
+               }
+
+               .mobile-menu-toggle {
+                    display: flex;
+               }
+
+               .hero-section {
+                    height: 60vh;
+                    padding-left: 20px;
+               }
+
+               .hero-title {
+                    font-size: 2.5rem;
+                    margin-bottom: 20px;
+               }
+
+               .hero-buttons {
+                    flex-direction: column;
+                    gap: 10px;
+               }
+
+               .content-section,
+               .content-section:nth-child(even) {
+                    flex-direction: column;
+                    gap: 20px;
+               }
+
+               .section-image,
+               .section-text {
+                    width: 100%;
+               }
+
+               .section-image {
+                    height: 250px;
+               }
+
+               .main-footer {
+                    flex-direction: column;
+                    gap: 30px;
+                    text-align: center;
+               }
+
+               .company-info,
+               .footer-links {
+                    text-align: center;
+               }
+
+               .email-form {
+                    flex-direction: column;
+                    gap: 10px;
+               }
+
+               .email-input,
+               .submit-button {
+                    width: 100%;
+                    border-radius: 30px;
+               }
+
+               .features-section {
+                    padding: 40px 15px;
+               }
+
+               .newsletter-section {
+                    padding: 40px 15px;
+               }
+          }
+
+          @media (max-width: 480px) {
+               .features-container {
+                    grid-template-columns: 1fr;
+               }
+
+               .hero-title {
+                    font-size: 2rem;
+               }
+
+               .section-title {
+                    font-size: 22px;
+               }
+
+               .section-paragraph {
+                    font-size: 14px;
+               }
+
+               .features-heading {
+                    font-size: 24px;
+               }
+
+               .newsletter-title {
+                    font-size: 22px;
+               }
+
+               .newsletter-text {
+                    font-size: 14px;
+               }
+          }
+     </style>
+</head>
+
+<body>
+     <header class="top-header">
+          <div class="site-logo flex items-center gap-4">
+               <a href="#"><img src="https://imgur.com/2TpTsqI.jpeg" alt="logo-lotus" width="80" height="80"></a>
+               <!-- New logo added here -->
+               <a href="#"><img src="https://imgur.com/jRlkbhg.jpeg" alt="Trafix Home Logo" width="80" height="80"></a>
+          </div>
+          <nav class="top-menu">
+               <a href="main.html" class="menu-link">Where to</a>
+               <a href="trafixlogin.html" class="menu-link">Login</a>
+               <a href="#" class="menu-link">Settings</a>
+          </nav>
+          <button class="mobile-menu-toggle" aria-label="Toggle menu">
+               <i class="fas fa-bars"></i>
+          </button>
+     </header>
+
+     <section class="hero-section">
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+               <h1 class="hero-title">A Commuter's Guide</h1>
+               <div class="hero-buttons">
+                    <a href="main.html" class="button-primary">Start your Journey</a>
+               </div>
+          </div>
+          <img src="https://i.pinimg.com/originals/26/c1/59/26c15924f3aa1205838247ab07221603.gif" alt="Animated commuter" class="commuter-animation">
+     </section>
+
+     <div class="main-container">
+          <div class="content-section">
+               <div class="section-image"
+                    style="background-image: url('https://i.pinimg.com/1200x/fc/4f/e1/fc4fe18f52f17ebf87dd92fbec514322.jpg');
+                    background-position: center;">
+                </div>
+               <div class="section-text">
+                    <h2 class="section-title">WELCOME TO TRAFIX</h2>
+                    <p class="section-paragraph"> Your smart companion for navigating the city with ease. Whether you're commuting by jeep, bus, train, or on foot, Trafix helps you find the best routes from point A to B. Designed with everyday commuters in mind, we make travel simpler, faster, and more convenient. Let Trafix guide your journey, one ride at a time.
+                    </p>
+               </div>
+          </div>
+
+          <div class="content-section">
+               <div class="section-image"
+                    style="background-image: url('https://i.pinimg.com/736x/44/f1/ef/44f1ef20e3a99f6a3413ea4a802e63cf.jpg');">
+               </div>
+               <div class="section-text">
+                    <h2 class="section-title">COMMUNITY</h2>
+                    <p class="section-paragraph">At Trafix, we believe that commuting is more than just getting from one point to another – it's an experience that brings people together. Our online space is designed to be an extension of your daily ride, where Filipino commuters can connect, share helpful tips, and discover everything about their favorite routes. Join our community and navigate the city with confidence!
+                    </p>
+                    <a href="#" class="pink-button">Join Our Community</a>
+               </div>
+          </div>
+     </div>
+
+ <section class="features-section">
+       <h2 class="features-heading">Why Choose Trafix</h2>
+       <div class="features-container">
+           <div class="feature-box">
+               <div class="feature-icon">
+                   <i class="fas fa-map-marker-alt"></i>
+               </div>
+               <h3 class="feature-name">Real-time Routes</h3>
+               <p class="feature-text">Get accurate, up-to-the-minute information on public transportation routes and schedules across Quezon City and Metro Manila, helping you plan your journey efficiently.</p>
+           </div>
+           <div class="feature-box">
+               <div class="feature-icon">
+                   <i class="fas fa-train"></i>
+               </div>
+               <h3 class="feature-name">Eco-Friendly Travel</h3>
+               <p class="feature-text">Embrace sustainable commuting options within Metro Manila. Trafix promotes the use of buses, trains, and other public transport, contributing to a greener environment and reduced traffic congestion in Quezon City.</p>
+           </div>
+           <div class="feature-box">
+               <div class="feature-icon">
+                   <i class="fas fa-route"></i>
+               </div>
+               <h3 class="feature-name">Seamless Journeys</h3>
+               <p class="feature-text">Our user-friendly platform helps you discover the fastest and most convenient ways to navigate Quezon City and reach your destination within Metro Manila, making every trip smooth and stress-free.</p>
+           </div>
+           <div class="feature-box">
+               <div class="feature-icon">
+                   <i class="fas fa-handshake"></i>
+               </div>
+               <h3 class="feature-name">Community First</h3>
+               <p class="feature-text">Join a vibrant network of commuters in Quezon City and Metro Manila. Share your experiences, find local insights about routes and traffic conditions, and connect with fellow riders to make your daily travels more enjoyable and informed.</p>
+           </div>
+       </div>
+   </section>
+
+
+          <div class="main-footer">
+               <div class="company-info">
+                    <div class="company-name">TRAFIX </div>
+                    <div class="company-details">Email: @trafixph@gmail.com</div>
+                    <div class="company-details">Contact: 09456376077</div>
+                    <div class="company-details">Recto, Manila</div>
+               </div>
+               <div class="footer-links">
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms & Conditions</a>
+                    <a href="#" class="footer-link">Customer Support</a>
+               </div>
+          </div>
+     </div>
+
+     <button class="scroll-top" aria-label="Back to top">
+          <i class="fas fa-arrow-up"></i>
+     </button>
+
+     <script>
+          window.onload = function () {
+               var scrollTopButton = document.querySelector('.scroll-top');
+               var mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+               var topMenu = document.querySelector('.top-menu');
+
+               window.onscroll = function () {
+                    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                         scrollTopButton.classList.add('show');
+                    } else {
+                         scrollTopButton.classList.remove('show');
+                    }
+               };
+
+               scrollTopButton.onclick = function () {
+                    document.body.scrollTop = 0;
+                    document.documentElement.scrollTop = 0;
+               };
+
+               // Mobile menu toggle
+               mobileMenuToggle.addEventListener('click', function () {
+                    topMenu.classList.toggle('show');
+               });
+          };
+     </script>
+</body>
+
+</html>
